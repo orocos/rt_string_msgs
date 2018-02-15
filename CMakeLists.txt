@@ -68,24 +68,23 @@ if(TARGET ${PROJECT_NAME}_generate_messages_cpp)
     "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/*.h"
   )
 
-## Build options
+  ## Build options
+  if(NOT DEFINED CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Release")
+    set(CMAKE_BUILD_TYPE MinSizeRel)
+  endif()
 
-if(NOT DEFINED CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(CMAKE_BUILD_TYPE MinSizeRel)
-endif()
+  ## Build typekit and transport plugins
+  include_directories(
+    include
+    include/orocos
+    ${catkin_INCLUDE_DIRS}
+  )
 
-## Build typekit and transport plugins
-include_directories(
-  include
-  include/orocos
-  ${catkin_INCLUDE_DIRS}
-)
-
-# Build ROS transport plugin
-orocos_typekit(rtt-rt_string_msgs-ros-transport
-  src/ros_rt_string_msgs_transport.cpp
-)
-target_link_libraries(rtt-rt_string_msgs-ros-transport ${catkin_LIBRARIES})
+  # Build ROS transport plugin
+  orocos_typekit(rtt-rt_string_msgs-ros-transport
+    src/ros_rt_string_msgs_transport.cpp
+  )
+  target_link_libraries(rtt-rt_string_msgs-ros-transport ${catkin_LIBRARIES})
 
   configure_file(cmake/rename_generated_header_files.cmake.in cmake/rename_generated_header_files.cmake @ONLY)
   add_custom_target(${PROJECT_NAME}_rename_generated_header_files
