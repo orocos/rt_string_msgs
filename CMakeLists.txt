@@ -109,6 +109,5 @@ install(
 
 ## Generate Orocos package
 orocos_generate_package(
-  DEPENDS rt_string_msgs
   DEPENDS_TARGETS rtt_roscomm
 )
