@@ -5,22 +5,10 @@ project(rt_string_msgs)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  rtt_roscomm
   message_generation
   std_msgs
 )
-
-## Find Orocos RTT and plugins
-find_package(OROCOS-RTT 2.0.0 COMPONENTS rtt-scripting rtt-marshalling rtt-transport-corba)
-if (NOT OROCOS-RTT_FOUND)
-  message(FATAL_ERROR "\n   RTT not found. Is the version correct? Use the CMAKE_PREFIX_PATH cmake or environment variable to point to the installation directory of RTT.")
-else()
-  include(${OROCOS-RTT_USE_FILE_PATH}/UseOROCOS-RTT.cmake)
-  #add_definitions( -DRTT_COMPONENT )
-endif()
-
-## find catkin and catkin dependencies
-find_package(catkin REQUIRED COMPONENTS rtt_roscomm)
-catkin_destinations()
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -121,6 +109,5 @@ install(
 
 ## Generate Orocos package
 orocos_generate_package(
-  DEPENDS rt_string_msgs
   DEPENDS_TARGETS rtt_roscomm
 )
