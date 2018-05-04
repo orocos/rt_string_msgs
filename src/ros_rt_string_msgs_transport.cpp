@@ -1,4 +1,4 @@
-#include <rt_string_msgs/boost/rt_string.h>
+#include <rt_string_msgs/rt_string.h>
 
 #include <rtt_roscomm/rtt_rostopic_ros_msg_transporter.hpp>
 #include <rtt_roscomm/rtt_rostopic.h>
@@ -12,7 +12,7 @@ namespace rtt_roscomm {
     {
       bool registerTransport(std::string name, types::TypeInfo* ti)
       {
-          if(name == "RTT.rt_string") { return ti->addProtocol(ORO_ROS_PROTOCOL_ID,new RosMsgTransporter<RTT::rt_string>());} else
+          if(name == "rt_string") { return ti->addProtocol(ORO_ROS_PROTOCOL_ID, new RosMsgTransporter<RTT::rt_string>());} else
             return false;
       }
       
