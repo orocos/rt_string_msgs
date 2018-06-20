@@ -83,7 +83,7 @@ if(TARGET ${PROJECT_NAME}_generate_messages_cpp)
     src/ros_rt_string_msgs_transport.cpp
   )
   target_link_libraries(rtt-rt_string_msgs-ros-transport ${catkin_LIBRARIES})
-  add_dependencies(rtt-rt_string_msgs-ros-transport ${catkin_EXPORTED_TARGETS})
+  add_dependencies(rtt-rt_string_msgs-ros-transport ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 endif()
 
 #############
