@@ -10,6 +10,12 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
+## Make sure we have gencpp >= 0.6.0 which does not generate C++ headers
+## if the package already provides one (plugin support).
+if(gencpp_VERSION AND gencpp_VERSION VERSION_LESS "0.6.0")
+  message(FATAL_ERROR "${PROJECT_NAME} requires gencpp version 0.6.0 or higher.")
+endif()
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -48,24 +54,6 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-
-## Language: cpp
-if(gencpp_VERSION VERSION_LESS "0.6.0" AND
-   TARGET ${PROJECT_NAME}_generate_messages_cpp)
-  ## Overwrite generated header files in devel-space
-  file(GLOB HEADERS
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/*.h"
-  )
-
-  configure_file(cmake/rename_generated_header_files.cmake.in cmake/rename_generated_header_files.cmake @ONLY)
-  add_custom_target(${PROJECT_NAME}_rename_generated_header_files
-    DEPENDS ${HEADERS}
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake/rename_generated_header_files.cmake
-    COMMENT "Moving generated C++ header files to include/${PROJECT_NAME}/generated/."
-  )
-  add_dependencies(${PROJECT_NAME}_rename_generated_header_files ${PROJECT_NAME}_generate_messages_cpp)
-  add_dependencies(${PROJECT_NAME}_generate_messages ${PROJECT_NAME}_rename_generated_header_files)
-endif()
 
 ## Build ROS transport plugin library
 if(TARGET ${PROJECT_NAME}_generate_messages_cpp)
